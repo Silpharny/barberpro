@@ -52,9 +52,6 @@ CREATE TABLE "services" (
 -- CreateIndex
 CREATE UNIQUE INDEX "subscriptions_userId_key" ON "subscriptions"("userId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "haircuts_userId_key" ON "haircuts"("userId");
-
 -- AddForeignKey
 ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

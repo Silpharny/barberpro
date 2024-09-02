@@ -16,6 +16,7 @@ class CreateHaircutService {
       data: {
         name,
         price,
+        userId,
       },
     })
 

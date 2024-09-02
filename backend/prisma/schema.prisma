@@ -52,7 +52,7 @@ model Haircut {
 
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
-  userId     String    @unique
+  userId     String
   user       User      @relation(fields: [userId], references: [id])
   Service    Service[]
 
