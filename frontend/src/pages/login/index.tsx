@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useContext, useState } from "react"
 
 import { AuthContext } from "@/context/AuthContext"
+import { canSSRGuest } from "@/utils/canSSRGuest"
 
 export default function Login() {
   const { signIn } = useContext(AuthContext)
@@ -81,3 +82,9 @@ export default function Login() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  }
+})

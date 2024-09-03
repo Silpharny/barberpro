@@ -1,12 +1,14 @@
 import Router from "next/router"
-import { destroyCookie, setCookie } from "nookies"
-import { createContext, ReactNode, useState } from "react"
+import { destroyCookie, parseCookies, setCookie } from "nookies"
+import { createContext, ReactNode, useEffect, useState } from "react"
 import { api } from "../services/apiClient"
 
 interface AuthContextData {
   user: UserProps
   isAuthenticated: boolean
   signIn: (data: SignInProps) => Promise<void>
+  signUp: (data: SignUpProps) => Promise<void>
+  logoutUser: () => Promise<void>
 }
 
 interface UserProps {
@@ -31,6 +33,12 @@ interface SignInProps {
   password: string
 }
 
+type SignUpProps = {
+  name: string
+  email: string
+  password: string
+}
+
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function SignOut() {
@@ -47,6 +55,29 @@ export function SignOut() {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>()
   const isAuthenticated = !!user
+
+  useEffect(() => {
+    const { "@barber.token": token } = parseCookies()
+
+    if (token) {
+      api
+        .get("/me")
+        .then((response) => {
+          const { id, name, email, address, subscriptions } = response.data
+
+          setUser({
+            id,
+            name,
+            email,
+            address,
+            subscriptions,
+          })
+        })
+        .catch(() => {
+          SignOut()
+        })
+    }
+  }, [])
 
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -77,8 +108,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signUp({ name, email, password }: SignUpProps) {
+    try {
+      const response = await api.post("/users", {
+        name,
+        email,
+        password,
+      })
+      Router.push("/dashboard")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function logoutUser() {
+    try {
+      destroyCookie(null, "@barber.token", {
+        path: "/",
+      })
+      setUser(null)
+      Router.push("/login")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, signIn }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, signIn, signUp, logoutUser }}
+    >
       {children}
     </AuthContext.Provider>
   )

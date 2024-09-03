@@ -1,20 +1,30 @@
-import { Flex, Text } from "@chakra-ui/react"
+import { Sidebar } from "@/components/sidebar"
+import { AuthContext } from "@/context/AuthContext"
+import { canSSRAuth } from "@/utils/canSSRAuth"
+import { Button, Flex } from "@chakra-ui/react"
 import Head from "next/head"
+import { useContext } from "react"
 
 export default function Dashboard() {
+  const { logoutUser } = useContext(AuthContext)
+
   return (
     <>
       <Head>
         <title>BarberPro - Dashboard</title>
       </Head>
-      <Flex
-        backgroundColor="barber.900"
-        height="100vh"
-        justify="center"
-        align="center"
-      >
-        <Text color="white">Dashboard</Text>
-      </Flex>
+
+      <Sidebar>
+        <Flex direction="column" justify="center" align="center" h="100vh">
+          <Button onClick={logoutUser}>Sair</Button>
+        </Flex>
+      </Sidebar>
     </>
   )
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  return {
+    props: {},
+  }
+})

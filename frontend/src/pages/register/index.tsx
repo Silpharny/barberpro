@@ -3,10 +3,13 @@ import Head from "next/head"
 import Image from "next/image"
 import logoImg from "../../../public/images/logo.svg"
 
+import { AuthContext } from "@/context/AuthContext"
+import { canSSRGuest } from "@/utils/canSSRGuest"
 import Link from "next/link"
-import { useState } from "react"
+import { useContext, useState } from "react"
 
 export default function Register() {
+  const { signUp } = useContext(AuthContext)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -17,7 +20,7 @@ export default function Register() {
       return
     }
 
-    alert("Cadastrado efetuado com sucesso!")
+    await signUp({ name, email, password })
   }
 
   return (
@@ -93,3 +96,9 @@ export default function Register() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  }
+})
