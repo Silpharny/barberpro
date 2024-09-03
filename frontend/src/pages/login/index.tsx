@@ -11,16 +11,20 @@ import { canSSRGuest } from "@/utils/canSSRGuest"
 
 export default function Login() {
   const { signIn } = useContext(AuthContext)
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
   async function handleLogin() {
+    setLoading(true)
     if (!email || !password) {
       alert("Preencha todos os campos!")
-      return
+      return setLoading(false)
     }
 
     await signIn({ email, password })
+    setLoading(false)
   }
 
   return (
@@ -60,16 +64,30 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button
-            backgroundColor="button.cta"
-            color="gray.900"
-            size="lg"
-            mb={6}
-            _hover={{ bg: "#ffb13e" }}
-            onClick={handleLogin}
-          >
-            Acessar
-          </Button>
+          {loading ? (
+            <Button
+              isLoading
+              loadingText="Loading"
+              backgroundColor="button.cta"
+              color="gray.900"
+              size="lg"
+              mb={6}
+              _hover={{ bg: "#ffb13e" }}
+            >
+              Acessar
+            </Button>
+          ) : (
+            <Button
+              backgroundColor="button.cta"
+              color="gray.900"
+              size="lg"
+              mb={6}
+              _hover={{ bg: "#ffb13e" }}
+              onClick={handleLogin}
+            >
+              Acessar
+            </Button>
+          )}
           <Center mt={2}>
             <Link href="/register">
               <Text cursor="pointer" color="gray.200" fontSize="sm" mb={6}>
