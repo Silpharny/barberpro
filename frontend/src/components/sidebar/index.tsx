@@ -165,6 +165,7 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         variant="outline"
         onClick={onOpen}
         color={"white"}
+        _hover={{ bg: "gray.900" }}
         aria-label="open menu"
         icon={<FiMenu />}
       />

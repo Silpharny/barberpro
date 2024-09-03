@@ -1,7 +1,7 @@
 import { Sidebar } from "@/components/sidebar"
 import { AuthContext } from "@/context/AuthContext"
 import { canSSRAuth } from "@/utils/canSSRAuth"
-import { Button, Flex } from "@chakra-ui/react"
+import { Button, Flex, Text } from "@chakra-ui/react"
 import Head from "next/head"
 import { useContext } from "react"
 
@@ -16,6 +16,7 @@ export default function Dashboard() {
 
       <Sidebar>
         <Flex direction="column" justify="center" align="center" h="100vh">
+          <Text color={"white"}>Dashboard</Text>
           <Button onClick={logoutUser}>Sair</Button>
         </Flex>
       </Sidebar>
