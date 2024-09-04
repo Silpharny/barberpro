@@ -4,6 +4,8 @@ interface HaircutRequest {
   user_id: string
 }
 
+// Checar assinatura do usuário
+
 class CheckSubscriptionService {
   async execute({ user_id }: HaircutRequest) {
     const status = await prismaClient.user.findFirst({
