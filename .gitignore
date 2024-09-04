@@ -1,6 +1,12 @@
 node_modules
 # Keep environment variables out of version control
 
+# backend
+backend/node_modules
+backend/prisma
 backend/.env
 backend/.dist
 
+# frontend
+frontend/.next
+frontend/node_modules
