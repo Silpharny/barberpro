@@ -22,10 +22,6 @@ class CheckSubscriptionService {
       },
     })
 
-    /*  if (status?.subscriptions?.status !== "active") {
-      throw new Error("You must have an active subscription")
-    } */
-
     return status
   }
 }
