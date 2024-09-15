@@ -88,8 +88,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       const { id, name, address, subscriptions, token } = response.data
 
+      // O novo token vai expirar em 30 dias
       setCookie(undefined, "@barber.token", response.data.token, {
-        maxAge: 60 * 60 * 24 * 30, // 30 days
+        maxAge: 60 * 60 * 24 * 30,
         path: "/",
       })
 
